@@ -3,7 +3,7 @@ import $ from 'jquery';
 //Example: https://thinkful-list-api.herokuapp.com/sonali/bookmarks
 const BASEURL = `https://thinkful-list-api.herokuapp.com`
 
-let testUser = 'sonaliN';
+let testUser = 'sonali';
 
 //fetch to check if adding is there, if user is new add  adding as true; 
 

@@ -2,6 +2,7 @@
 
 
 import $ from 'jquery';
+import 'normalize.css';
 import './index.css';
 import './star.css';
 import bookmarks from './generateView.js';
