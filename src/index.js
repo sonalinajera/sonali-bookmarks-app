@@ -1,46 +1,56 @@
 "use strict"; 
 
+
 import $ from 'jquery';
 import './index.css';
 import './star.css';
-import createFxs from './createView.js';
+import bookmarks from './generateView.js';
+import api from './api.js';
 
 // ***** test to make sure js works ****  
+// test data 
+// const store = {
+//   bookmarks: [
+//     {
+//       id: 'x56w',
+//       title: 'Title 1',
+//       rating: 3,
+//       url: 'http://www.title1.com',
+//       description: 'lorem ipsum dolor sit',
+//       expanded: false
+//     },
+//     {
+//       id: '6ffw',
+//       title: 'Title 2',
+//       rating: 5,
+//       url: 'http://www.title2.com',
+//       description: 'dolorum tempore deserunt',
+//       expanded: false
+//     } 
+//   ],
+//   adding: false,
+//   error: null,
+//   filter: 0
+// };
 
-let adding = false; 
+
 
 function main () {
-  handleAddBookmarkClick();
-  handleCancelAddBookmarkClick();
+  //call getBookmarks, that calls apiFetch, that returns JS objs
+  api.getBookmarks()
+    .then(items => {
+    //   // once I set up proper append, this will be displayed below out main menu
+      console.log(items);
+      // if return obj === [] this means user is new so we want to set add item to false immediately
+      if (items.length === 0) {
+        return $('.js-mainMenu').after(`<h4> nothing to show yet, add a bookmark</h4>`);
+      }
+    });
+  bookmarks.bindEventListeners();
+  bookmarks.render();
 }
 
-function render() {
-  if(adding) {
-    return $('.js-mainMenu').after(createFxs.createAddBookmark);
- }   
-}
 
-function handleAddBookmarkClick() {
-  $('#addBookmark').on('click', function (event) {
-    event.preventDefault();
-    // prevents add button from being spammed 
-    if (adding) {
-      return alert('finish adding your item before you add another');
-    }
-    adding = true; 
-    render();
-  });
-}
-
-function handleCancelAddBookmarkClick() {
-  $('body').on('click', '#js-cancelButton', function(event) {
-    event.preventDefault();
-    // if we cancel add bookmark set adding to false
-    adding = false;
-    // remove create bookmarkk field
-    $('div').remove('.addBookMarkWindowView');
-  });
-}
 
 $(main);
 
