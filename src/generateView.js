@@ -101,14 +101,17 @@ function handleSubmitBookmarkClick() {
     if (userInputTitle === '' || userInputURL === '' ) {
       return alert('Please provide a title and url');
     }
-    store.adding = false;
     // createNewBookMarks will create a JSON obj 
     let newSubmission = {
       title: userInputTitle,
       url: userInputURL,
       desc: userInputDesc,
     };
+    //removes add link field
     $('div').remove('.addBookMarkWindowView');
+    // makes it so you can add a new link
+    store.adding = false;
+    // posts to the API :) 
     return api.createNewBookmarks(newSubmission);
   });
 }
