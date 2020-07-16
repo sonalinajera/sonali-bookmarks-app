@@ -28,7 +28,39 @@ function generateAddBookmarkView() {
 }
 
 function generateBookmarkList() {
-  
+         `<li>
+            <h3 class="flexListItems">THis is a really long website name ! </h3>
+            <section class="flexListElements">
+              <fieldset class="starability-heartbeat">
+                <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+                <input type="radio" id="first-rate1" name="rating" value="1" />
+                <label for="first-rate1" title="Terrible">1 star</label>
+                <input type="radio" id="first-rate2" name="rating" value="2" />
+                <label for="first-rate2" title="Not good">2 stars</label>
+                <input type="radio" id="first-rate3" name="rating" value="3" />
+                <label for="first-rate3" title="Average">3 stars</label>
+                <input type="radio" id="first-rate4" name="rating" value="4" />
+                <label for="first-rate4" title="Very good">4 stars</label>
+                <input type="radio" id="first-rate5" name="rating" value="5" />
+                <label for="first-rate5" title="Amazing">5 stars</label>
+              </fieldset>
+     
+              <!-- clicking view more will remove the hide class from section element -->
+          
+              <button type="button">View More</button>
+              <button type="button">Delete</button>
+     
+            </section>
+            <!-- clicking view more will remove the hide class from section element -->
+            <section class="bookmarkDetails hide"> 
+            <p>link to website: <a href="#">My Fav Cat Website</a></p>
+            <p class="description">
+             description: This genereates the best of the best cat memes! Super duper dope! 
+             I hope I can share this with the world someday.
+            </p>
+            </section>
+          </li>`;
+
 }
 
 function render() {
