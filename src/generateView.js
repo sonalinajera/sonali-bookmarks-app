@@ -1,7 +1,9 @@
 import $ from 'jquery';
 import api from './api.js';
+// import store from './store.js';
 
 const store = {
+  items: [],
   adding: false,
   error: null,
   filter: 0,
@@ -27,9 +29,9 @@ function generateAddBookmarkView() {
     </div>`;
 }
 
-function generateBookmarkList() {
+function generateBookmarkList(...args) {
          `<li>
-            <h3 class="flexListItems">THis is a really long website name ! </h3>
+            <h3 class="flexListItems">${items.title}</h3>
             <section class="flexListElements">
               <fieldset class="starability-heartbeat">
                 <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
@@ -63,11 +65,32 @@ function generateBookmarkList() {
 
 }
 
+function generateBookmarkListItem(arrOfBookMarks) {
+  
+}
+
 function render() {
   if(store.adding) {
     return $('.js-mainMenu').after(generateAddBookmarkView);
-  }   
+  } 
+  if (store.error === null && store.items.length !== 0) {
+    console.log('render function :')
+   return $('ul').append(`<li><h2>${store.items[0].title}</h2></li>`)
+  }
 }
+
+
+function updatesLocalStore(item) {
+
+  if(item !== undefined) {
+  store.items.push(item);
+  console.log('local store updates', store);
+  render();
+  }
+}
+
+
+
   
 function handleAddBookmarkClick() {
   $('#addBookmark').on('click', function (event) {
@@ -130,5 +153,6 @@ function bindEventListeners() {
 export default {
   render,
   bindEventListeners,
-  store
+  store,
+  updatesLocalStore
 }

@@ -8,6 +8,7 @@ import './star.css';
 import bookmarks from './generateView.js';
 import api from './api.js';
 
+
 // ***** test to make sure js works ****  
 // test data 
 // const store = {
@@ -41,11 +42,12 @@ function main () {
   api.getBookmarks()
     .then(items => {
     //   // once I set up proper append, this will be displayed below out main menu
-      console.log(items);
       // if return obj === [] this means user is new so we want to set add item to false immediately
       if (items.length === 0) {
         return $('.js-mainMenu').after(`<h4> nothing to show yet, add a bookmark</h4>`);
       }
+      // otherwise push each obj containing our info to our local store
+      items.forEach((item) => bookmarks.updatesLocalStore(item));
     });
   bookmarks.bindEventListeners();
   bookmarks.render();
