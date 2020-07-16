@@ -2,12 +2,27 @@ import $ from 'jquery';
 import api from './api.js';
 // import store from './store.js';
 
+
+// ******* functions below are for need to be moved to store.js **********
 const store = {
   items: [],
   adding: false,
   error: null,
   filter: 0,
 };
+
+
+
+function updatesLocalStore(item) {
+
+  if(item !== undefined) {
+    store.items.push(item);
+    render();
+  }
+}
+
+
+// ******* functions below are for generateView.js **********
 
 function generateAddBookmarkView() {
   // might have to relocate this to the catch respond when an error occurs
@@ -29,9 +44,9 @@ function generateAddBookmarkView() {
     </div>`;
 }
 
-function generateBookmarkList(...args) {
-         `<li>
-            <h3 class="flexListItems">${items.title}</h3>
+function generateBookmarkList() {
+  return `<li>
+            <h3 class="flexListItems">${store.items[0].title}</h3>
             <section class="flexListElements">
               <fieldset class="starability-heartbeat">
                 <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
@@ -49,13 +64,14 @@ function generateBookmarkList(...args) {
      
               <!-- clicking view more will remove the hide class from section element -->
           
-              <button type="button">View More</button>
-              <button type="button">Delete</button>
+              <button id="js-viewMore" class="" type="button">View More</button>
+              <button id="js-viewLess" class="hide" type="button">View Less</button>
+              <button id="js-delete" type="button">Delete</button>
      
             </section>
             <!-- clicking view more will remove the hide class from section element -->
-            <section class="bookmarkDetails hide"> 
-            <p>link to website: <a href="#">My Fav Cat Website</a></p>
+            <section id="js-toggleHide" class="bookmarkDetails hide"> 
+            <p><a href="${store.items[0].url}">Visit Site</a></p>
             <p class="description">
              description: This genereates the best of the best cat memes! Super duper dope! 
              I hope I can share this with the world someday.
@@ -74,24 +90,16 @@ function render() {
     return $('.js-mainMenu').after(generateAddBookmarkView);
   } 
   if (store.error === null && store.items.length !== 0) {
-    console.log('render function :')
-   return $('ul').append(`<li><h2>${store.items[0].title}</h2></li>`)
-  }
-}
-
-
-function updatesLocalStore(item) {
-
-  if(item !== undefined) {
-  store.items.push(item);
-  console.log('local store updates', store);
-  render();
+    console.log('render function :', store);
+    return $('ul').append(generateBookmarkList());
   }
 }
 
 
 
-  
+
+// *************** EVENT LISTENERS ***************
+
 function handleAddBookmarkClick() {
   $('#addBookmark').on('click', function (event) {
     event.preventDefault();
@@ -139,11 +147,32 @@ function handleSubmitBookmarkClick() {
   });
 }
 
+function handleViewMoreClick() {
+  $('body').on('click', '#js-viewMore', function (event) {
+    event.preventDefault();
+    $('section#js-toggleHide').removeClass('hide');
+    $('#js-viewMore').addClass('hide');
+    $('#js-viewLess').removeClass('hide');
+  });
+}
+
+function handleViewLessClick() {
+  $('body').on('click', '#js-viewLess', function (event) {
+    event.preventDefault();
+    $('section#js-toggleHide').addClass('hide');
+    $('#js-viewLess').addClass('hide');
+    $('#js-viewMore').removeClass('hide');
+  });
+}
+
+// putting all event listeners in a convienent function 
 
 function bindEventListeners() {
   handleAddBookmarkClick();
   handleCancelAddBookmarkClick();
   handleSubmitBookmarkClick();
+  handleViewMoreClick();
+  handleViewLessClick();
 }
 
 
