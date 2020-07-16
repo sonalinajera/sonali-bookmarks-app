@@ -2,14 +2,13 @@
   "name": "bookmarkApp",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server", 
     "build": "webpack --mode production"
   },
   "keywords": [],
-  "author": "",
+  "author": "Sonali Najera",
   "license": "ISC",
   "dependencies": {
     "jquery": "^3.5.1"

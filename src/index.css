@@ -19,7 +19,7 @@ body {
   
   
   h1 {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     color: rgb(175, 128, 67)
   }
   
@@ -119,7 +119,7 @@ body {
   }
   
   /* styles for when user clicks view more in their bookmark list  */
-  
+  .hide {
     display: none;
   }
   
