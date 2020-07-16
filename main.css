@@ -1,5 +1,143 @@
 /* Test to make sure sheet is linked  */
-h1 {
+/* h1 {
     color: red;
-}
+} */
 /* end of test */
+
+body {
+    display:flex; 
+    flex-direction:column; 
+    justify-content:center;
+    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  body > section {
+    width: 90%;
+  }
+  
+  
+  h1 {
+    margin-bottom: 10px;
+    color: rgb(175, 128, 67)
+  }
+  
+  h2 {
+    color: red;
+  }
+  
+  h3 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  .flexMainMenu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+  }
+
+  .flexMainMenu button {
+      border-radius: 10px;
+      background-color: #f0d264
+  }
+
+
+
+  /* styles for user add bookmark view  */
+  
+  .addBookMarkWindowView {
+    border: solid 2px purple;
+    width: 70%;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 30px;
+  }
+  
+  form {
+    width: 100%;
+    margin: auto;
+  }
+  
+  form input[type="text"], input[type="url"] {
+    width: 195px; 
+    margin-top: 5px;
+    margin-bottom: 10px;
+  
+  }
+  
+  textarea {
+    width: 196px;
+    height: 100px;
+  }
+  
+  form > section { 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+    width: 200px;
+    margin: auto;
+  }
+  
+  /* style for user bookmark display  */
+  
+  ul {
+    list-style-type: none;
+    border: 1px blue dashed;
+    width: 90%;
+    margin: auto;
+    padding: 0;
+  }
+  
+  li {
+    border: 2px green solid;
+    padding: 10px 5px;
+    margin-bottom: 5px; 
+    width: 95%;
+    margin: auto;
+  }
+  
+  fieldset {
+    padding: 0px;
+    text-align: center;
+    
+  }
+  
+  .flexListElements {
+    color: red;
+    display: flex;
+    margin: 0;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  
+  .flexListItems {
+    flex: 1;
+  }
+  
+  /* styles for when user clicks view more in their bookmark list  */
+  
+    display: none;
+  }
+  
+  .bookmarkDetails {
+    width: 95%;
+    margin: auto;
+  }
+  
+  p {
+    text-align: start;
+    margin: 10px 0;
+  }
+  
+  p.description {
+    text-align: start;
+    margin: 10px 0;
+    height: 60px;
+    overflow: scroll;
+  }
+  
+/* ****** Need to add desktop styles here ******    */

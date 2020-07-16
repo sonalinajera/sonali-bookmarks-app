@@ -2,15 +2,19 @@
 
 
 // ***** test to make sure js works ****  
-//function main () {
-//   handleTestClick();
-// }
+function main () {
+  handleAddBookmarkClick()
+}
 
-// function handleTestClick() {
-//   $('#test').on('click', function (event) {
-//     event.preventDefault();
-//     alert('Hey Girl');
-//   });
-// }
+function handleAddBookmarkClick() {
+  $('#addBookmark').on('click', function (event) {
+    event.preventDefault();
+    alert('Zoom Zoom');
+  });
 
-// $(main)
+}
+
+$(main)
+
+
+

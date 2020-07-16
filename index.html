@@ -12,9 +12,22 @@
     <link rel="stylesheet" type="text/css" href="main.css"/>
 </head>
 <body>
-    <h1>Hello world!</h1>
-    <button id="test">Hey</button>
+    <h1>BookMark APP</h1>
+    <section class="flexMainMenu">
+        <button id="addBookmark" type="button">ADD NEW </button>
 
+        <div class="flexMainMenu">
+            <select id="dropdown" name="rating">
+                <option disabled value><option>Filter by rating:</option>
+                <option value=5>5 stars</option>
+                <option value=4>4 stars & above</option>
+                <option value=3>3 stars & above</option>
+                <option value=2>2 stars & above</option>
+                <option value=1>1 star & above</option>
+            </select>
+        </div>
+        
+    </section>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="main.js"></script>
 </body>
