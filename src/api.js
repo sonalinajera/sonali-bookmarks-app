@@ -3,7 +3,7 @@ import $ from 'jquery';
 //Example: https://thinkful-list-api.herokuapp.com/sonali/bookmarks
 const BASEURL = `https://thinkful-list-api.herokuapp.com`
 
-let testUser = 'sonali';
+let testUser = 'sonaliN';
 
 //fetch to check if adding is there, if user is new add  adding as true; 
 
@@ -41,7 +41,7 @@ function apiFetch(...args) {
 }
 
 function getBookmarks(){
-  return apiFetch(`${BASEURL}/${testUser}N/bookmarks`); // []
+  return apiFetch(`${BASEURL}/${testUser}/bookmarks`); // []
 }
 
 function createNewBookmarks(jsObject) {

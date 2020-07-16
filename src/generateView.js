@@ -108,8 +108,8 @@ function handleSubmitBookmarkClick() {
       url: userInputURL,
       desc: userInputDesc,
     };
+    $('div').remove('.addBookMarkWindowView');
     return api.createNewBookmarks(newSubmission);
-
   });
 }
 
