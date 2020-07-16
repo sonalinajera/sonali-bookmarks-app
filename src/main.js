@@ -1,5 +1,6 @@
 "use strict"; 
 
+import $ from 'jquery';
 import createContent from './createView';
 
 // ***** test to make sure js works ****  
@@ -8,8 +9,8 @@ function main () {
 }
 
 function render() {
- if(adding) {
-     return createAddBookmark();
+  if(adding) {
+    return createContent.createAddBookmark();
  }   
 }
 
@@ -17,6 +18,7 @@ function handleAddBookmarkClick() {
   $('#addBookmark').on('click', function (event) {
     event.preventDefault();
     alert('Zoom Zoom');
+    //render();
   });
 
 }
