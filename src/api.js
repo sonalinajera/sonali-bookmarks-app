@@ -51,15 +51,23 @@ function createNewBookmarks(jsObject) {
   // and the body, the thing that contains our important info
   return apiFetch(`${BASEURL}/${testUser}/bookmarks`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
     body: JSONObj
   });
 }
 
-function updateBookmarks() {
 
+
+
+function updateBookmarks(id, jsObject) {
+  const JSONObj = JSON.stringify(jsObject);
+  return apiFetch(`${BASEURL}/${testUser}/bookmarks/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSONObj
+  }
+  );
 }
 
 function deleteBookmarks(){
@@ -69,5 +77,6 @@ function deleteBookmarks(){
 
 export default {
   getBookmarks,
-  createNewBookmarks
+  createNewBookmarks,
+  updateBookmarks
 }

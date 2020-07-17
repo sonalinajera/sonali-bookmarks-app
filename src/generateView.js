@@ -21,6 +21,13 @@ function updatesLocalStore(item) {
   }
 }
 
+function getCurrentItemID(propertyToCompare) {
+  let bookmarkObj = store.items.find(function(bookmark) {
+    return bookmark.title === propertyToCompare;
+  });
+  return bookmarkObj.id;
+}
+
 
 // ******* functions below are for generateView.js **********
 
@@ -29,7 +36,7 @@ function generateAddBookmarkView() {
   // <h2 class="hide">JSON returns an error!</h2>
   return `
     <div class="addBookMarkWindowView">
-        <form>
+        <form id="js-formSubmit">
             <input type="text" id="addTitle" name="addTitle" placeholder="Title" required>
             <br>
             <input type="url" id="addURL" name="addURL" placeholder="http(s)://example.com" pattern="https?://.*" required>
@@ -69,7 +76,7 @@ function generateBookmarkList() {
               <button id="js-delete" type="button">Delete</button>
      
             </section>
-            <!-- clicking view more will remove the hide class from section element -->
+
             <section id="js-toggleHide" class="bookmarkDetails hide"> 
             <p><a href="${store.items[0].url}">Visit Site</a></p>
             <p class="description">
@@ -90,7 +97,6 @@ function render() {
     return $('.js-mainMenu').after(generateAddBookmarkView);
   } 
   if (store.error === null && store.items.length !== 0) {
-    console.log('render function :', store);
     return $('ul').append(generateBookmarkList());
   }
 }
@@ -123,15 +129,12 @@ function handleCancelAddBookmarkClick() {
 }
 
 function handleSubmitBookmarkClick() {
-  $('body').on('click', '#js-submitAddButton', function(event) {
+  $('body').on('submit', '#js-formSubmit', function(event) {
     event.preventDefault();
     // if ()
     let userInputTitle = $('#addTitle').val();
     let userInputURL = $('#addURL').val();
-    let userInputDesc = $('#addDescription').val()
-    if (userInputTitle === '' || userInputURL === '' ) {
-      return alert('Please provide a title and url');
-    }
+    let userInputDesc = $('#addDescription').val();
     // createNewBookMarks will create a JSON obj 
     let newSubmission = {
       title: userInputTitle,
@@ -165,6 +168,24 @@ function handleViewLessClick() {
   });
 }
 
+function handleRatingSubmission() {
+  // listens for the form submit event for the ratings
+  //.starability-heartbeat input listens for input element in on submit
+  //
+  $('body').on('click', '.starability-heartbeat input', function (event) {
+    // event.target = <input type="radio" id="ID OF ITEM SELECTED" name="rating" value="VALUE OF RADIO BUTTON SELECTED">
+    //event.target.value = value of input
+    //parseInt since the value is string, convert to number to format the same as API 
+    //grab the nearest title
+    let bookmarkTitle = $('input:checked').parents('section').prev().text();
+    let currentBookmarkId = getCurrentItemID(bookmarkTitle);
+    let userRating = {
+      rating: parseInt(event.target.value)
+    };
+    api.updateBookmarks(currentBookmarkId, userRating);
+  });
+}
+
 // putting all event listeners in a convienent function 
 
 function bindEventListeners() {
@@ -173,6 +194,7 @@ function bindEventListeners() {
   handleSubmitBookmarkClick();
   handleViewMoreClick();
   handleViewLessClick();
+  handleRatingSubmission();
 }
 
 
