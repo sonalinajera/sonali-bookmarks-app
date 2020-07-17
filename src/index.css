@@ -70,7 +70,7 @@ body {
   
   textarea {
     width: 196px;
-    height: 100px;
+    height: 50px;
   }
   
   form > section { 
@@ -135,9 +135,11 @@ body {
   
   p.description {
     text-align: start;
-    margin: 10px 0;
-    height: 20px;
+    margin: auto;
+    height: 40px;
+    width: 95%;
     overflow: scroll;
+    overflow-y: scroll;
   }
   
 /* ****** Need to add desktop styles here ******    */

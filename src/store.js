@@ -16,11 +16,10 @@ function updatesLocalStore(item) {
   console.log(store);
 }
   
-function getCurrentItemID(propertyToCompare) { 
-  let bookmarkObj = store.items.find(function(bookmark) {
-    return bookmark.title === propertyToCompare;
-  });
-  return bookmarkObj.id;
+function getCurrentItemID(targetName) { 
+  let targetObj = store.items.find(function(currentItem) {
+    return currentItem.title === targetName;});
+  return targetObj.id;
 }
 
 
