@@ -51,6 +51,7 @@ function main () {
     });
   bookmarks.bindEventListeners();
   bookmarks.render();
+  console.log('current local store:', bookmarks.store)
 }
 
 

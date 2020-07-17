@@ -136,7 +136,7 @@ body {
   p.description {
     text-align: start;
     margin: 10px 0;
-    height: 60px;
+    height: 20px;
     overflow: scroll;
   }
   

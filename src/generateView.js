@@ -41,7 +41,7 @@ function generateAddBookmarkView() {
             <br>
             <input type="url" id="addURL" name="addURL" placeholder="http(s)://example.com" pattern="https?://.*" required>
             <br>
-            <textarea id="addDescription" name="addDescription" placeholder="description (optional)"></textarea>
+            <textarea id="addDescription" name="addDescription" placeholder="short and sweet!" required></textarea>
             <br>
             <section class="addButtonFlex">	
                 <input type="button" id="js-cancelAddButton" value="Cancel">
@@ -50,7 +50,8 @@ function generateAddBookmarkView() {
         </form> 
     </div>`;
 }
-
+// needs to render radio button selection if a rating exists in the API
+//if rating !== undefined, then find value = rating and input:checked === true? 
 function generateBookmarkList() {
   return `<li>
             <h3 class="flexListItems">${store.items[0].title}</h3>
@@ -68,9 +69,7 @@ function generateBookmarkList() {
                 <input type="radio" id="first-rate5" name="rating" value="5" />
                 <label for="first-rate5" title="Amazing">5 stars</label>
               </fieldset>
-     
-              <!-- clicking view more will remove the hide class from section element -->
-          
+               
               <button id="js-viewMore" class="" type="button">View More</button>
               <button id="js-viewLess" class="hide" type="button">View Less</button>
               <button id="js-delete" type="button">Delete</button>
@@ -80,8 +79,7 @@ function generateBookmarkList() {
             <section id="js-toggleHide" class="bookmarkDetails hide"> 
             <p><a href="${store.items[0].url}">Visit Site</a></p>
             <p class="description">
-             description: This genereates the best of the best cat memes! Super duper dope! 
-             I hope I can share this with the world someday.
+            ${store.items[0].desc}
             </p>
             </section>
           </li>`;
@@ -115,7 +113,8 @@ function handleAddBookmarkClick() {
     }
     store.adding = true; 
     render();
-  });
+  }) // need to add catch error functionality 
+  ;
 }
   
 function handleCancelAddBookmarkClick() {
@@ -146,27 +145,12 @@ function handleSubmitBookmarkClick() {
     // makes it so you can add a new link
     store.adding = false;
     // posts to the API :) 
-    return api.createNewBookmarks(newSubmission);
-  });
+    api.createNewBookmarks(newSubmission);
+    // render();
+  }) // need to add catch
+  ;
 }
 
-function handleViewMoreClick() {
-  $('body').on('click', '#js-viewMore', function (event) {
-    event.preventDefault();
-    $('section#js-toggleHide').removeClass('hide');
-    $('#js-viewMore').addClass('hide');
-    $('#js-viewLess').removeClass('hide');
-  });
-}
-
-function handleViewLessClick() {
-  $('body').on('click', '#js-viewLess', function (event) {
-    event.preventDefault();
-    $('section#js-toggleHide').addClass('hide');
-    $('#js-viewLess').addClass('hide');
-    $('#js-viewMore').removeClass('hide');
-  });
-}
 
 function handleRatingSubmission() {
   // listens for the form submit event for the ratings
@@ -183,10 +167,39 @@ function handleRatingSubmission() {
       rating: parseInt(event.target.value)
     };
     api.updateBookmarks(currentBookmarkId, userRating);
-  });
+  }) // need to add catch for error cases 
+  ;
+  render();
 }
 
-// putting all event listeners in a convienent function 
+function handleViewMoreClick() {
+  $('body').on('click', '#js-viewMore', function (event) {
+    event.preventDefault();
+    $('section#js-toggleHide').removeClass('hide');
+    $('#js-viewMore').addClass('hide');
+    $('#js-viewLess').removeClass('hide');
+  })// need to add catch for error
+  render();
+}
+
+function handleViewLessClick() {
+  $('body').on('click', '#js-viewLess', function (event) {
+    event.preventDefault();
+    $('section#js-toggleHide').addClass('hide');
+    $('#js-viewLess').addClass('hide');
+    $('#js-viewMore').removeClass('hide');
+  }) // need to add catch for error
+  render();
+}
+
+function handleDeleteClick() {
+  $('body').on('click', '#js-delete', function (event) {
+    let bookmarktId = getCurrentItemID($('#js-delete').parents('section').prev().text());
+    api.deleteBookmarks(bookmarktId);
+  }) // need to add catch for error
+}
+
+// putting all event listeners in a convenient function 
 
 function bindEventListeners() {
   handleAddBookmarkClick();
@@ -195,6 +208,7 @@ function bindEventListeners() {
   handleViewMoreClick();
   handleViewLessClick();
   handleRatingSubmission();
+  handleDeleteClick();
 }
 
 
