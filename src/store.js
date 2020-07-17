@@ -9,6 +9,10 @@ function updateAddingBookmarkStoreState(bool) {
   this.store.adding = bool;
 } 
 
+function updateItemRating(index, number){
+  this.store.items[index].rating = number;
+}
+
 function updateBookmarkHideDetails(index, bool){
   this.store.items[index].hideDetails = bool;
 }
@@ -51,5 +55,6 @@ export default {
   getMatchingBookmark,
   getMatchingBookMarkIndex,
   updateAddingBookmarkStoreState,
-  updateBookmarkHideDetails
+  updateBookmarkHideDetails,
+  updateItemRating
 };

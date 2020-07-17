@@ -35,21 +35,26 @@ function generateBookmarkItem(bookmark) {
   if (bookmark.hideDetails) {
     bookmarkViewDetailsButton = `<button class="js-viewLess" type="button">View Less</button>`
     bookmarkDetailsSection = `<section id="js-toggleHide" class="bookmarkDetails">`
+
+  // if(bookmark.rating !== null) {
+
+  // }
+  
   }
   return `<li>
             <h3 class="flexListItems">${bookmark.title}</h3>
             <section class="flexListElements">
               <fieldset class="starability-heartbeat">
                 <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
-                <input type="radio" id="first-rate" name="rating" value="1" />
+                <input ${bookmark.rating === 1 ? `checked` : ``} type="radio" id="first-rate1" name="rating" value="1" />
                 <label for="first-rate1" title="Terrible">1 star</label>
-                <input type="radio" id="first-rate" name="rating" value="2" />
+                <input ${bookmark.rating === 2 ? `checked` : ``} type="radio" id="first-rate2" name="rating" value="2" />
                 <label for="first-rate2" title="Not good">2 stars</label>
-                <input type="radio" id="first-rate$" name="rating" value="3" />
+                <input ${bookmark.rating === 3 ? `checked` : ``} type="radio" id="first-rate3" name="rating" value="3" />
                 <label for="first-rate3" title="Average">3 stars</label>
-                <input type="radio" id="first-rate" name="rating" value="4" />
+                <input ${bookmark.rating === 4 ? `checked` : ``} type="radio" id="first-rate4" name="rating" value="4" />
                 <label for="first-rate4" title="Very good">4 stars</label>
-                <input type="radio" id="first-rate" name="rating" value="5" />
+                <input ${bookmark.rating === 5 ? `checked` : ``} type="radio" id="first-rate5" name="rating" value="5" />
                 <label for="first-rate5" title="Amazing">5 stars</label>
               </fieldset>
                
@@ -154,19 +159,23 @@ function handleRatingSubmission() {
   // listens for the form submit event for the ratings
   //.starability-heartbeat input listens for input element in on submit
   //
-  $('body').on('click', '.starability-heartbeat input', function (event) {
-    // event.target = <input type="radio" id="ID OF ITEM SELECTED" name="rating" value="VALUE OF RADIO BUTTON SELECTED">
-    //event.target.value = value of input
-    //parseInt since the value is string, convert to number to format the same as API 
+  $('body').on('click', 'input:checked', function (event) {
     
-    let bookmarkTitle = $('input:checked').parents('section').prev().text();
-    let currentBookmarkId = data.getCurrentItemID(bookmarkTitle);
+    let targetTitle = $(this).closest('li').find('h3').text();
+    let targetId = data.getCurrentItemID(targetTitle);
+    let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
     let userRating = {
       rating: parseInt(event.target.value)
     };
-    api.updateBookmarks(currentBookmarkId, userRating);
-  }) // need to add catch for error cases 
-  ;
+    api.updateBookmarks(targetId, userRating).then(() => {
+      data.updateItemRating(targetBookMarkIndex, userRating.rating);
+      console.log('Rating Changed', data.store.items);
+      // render();
+    })
+      .catch((e) => {
+        console.log(e);
+      });
+  });
 }
 
 function handleViewMoreClick() {
@@ -187,9 +196,6 @@ function handleViewLessClick() {
     let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
     data.updateBookmarkHideDetails(targetBookMarkIndex, false);
     render();
-    // $(this).parents('li').find('section#js-toggleHide').addClass('hide');
-    // $(this).addClass('hide');
-    // $(this).prev().removeClass('hide');
   });
 }
 
