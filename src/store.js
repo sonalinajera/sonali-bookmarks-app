@@ -13,9 +13,11 @@ const store = {
 function updatesLocalStore(item) {
 //this is part of object oriented programming
   this.store.items.push(item); 
-  console.log(store);
 }
-  
+
+function removesItemsFromLocalStore(id) {
+  store.items = store.items.filter(bookmark => bookmark.id !== id);
+}
 function getCurrentItemID(targetName) { 
   let targetObj = store.items.find(function(currentItem) {
     return currentItem.title === targetName;});
@@ -26,5 +28,6 @@ function getCurrentItemID(targetName) {
 export default {
   store,
   updatesLocalStore,
+  removesItemsFromLocalStore,
   getCurrentItemID
 };

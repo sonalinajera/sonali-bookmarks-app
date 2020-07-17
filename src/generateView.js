@@ -2,6 +2,7 @@ import $ from 'jquery';
 import api from './api.js';
 import data from './store.js';
 
+
 // a good test to see what youre targeting 
 // $(this).parents('section').prev().css( "background-color", "red" );
 
@@ -28,22 +29,21 @@ function generateAddBookmarkView() {
 }
 // needs to render radio button selection if a rating exists in the API
 //if rating !== undefined, then find value = rating and input:checked === true? 
-function generateBookmarkList(bookmark, i) {
-  console.log('object',bookmark);
+function generateBookmarkItem(bookmark) {
   return `<li>
             <h3 class="flexListItems">${bookmark.title}</h3>
             <section class="flexListElements">
               <fieldset class="starability-heartbeat">
-                <input type="radio" id="no-rate${i}" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
-                <input type="radio" id="first-rate${i + 1}" name="rating" value="1" />
+                <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+                <input type="radio" id="first-rate" name="rating" value="1" />
                 <label for="first-rate1" title="Terrible">1 star</label>
-                <input type="radio" id="first-rate${i + 2}" name="rating" value="2" />
+                <input type="radio" id="first-rate" name="rating" value="2" />
                 <label for="first-rate2" title="Not good">2 stars</label>
-                <input type="radio" id="first-rate${i + 3}" name="rating" value="3" />
+                <input type="radio" id="first-rate$" name="rating" value="3" />
                 <label for="first-rate3" title="Average">3 stars</label>
-                <input type="radio" id="first-rate${i + 4}" name="rating" value="4" />
+                <input type="radio" id="first-rate" name="rating" value="4" />
                 <label for="first-rate4" title="Very good">4 stars</label>
-                <input type="radio" id="first-rate${i + 5}" name="rating" value="5" />
+                <input type="radio" id="first-rate" name="rating" value="5" />
                 <label for="first-rate5" title="Amazing">5 stars</label>
               </fieldset>
                
@@ -63,19 +63,32 @@ function generateBookmarkList(bookmark, i) {
 
 }
 
-function generateBookmarkListItem() {
-  data.store.items.forEach((bookmark, i) => {
-    return $('ul').append(generateBookmarkList(bookmark, i));
-  });
+function generateBookmarkList() {
+  // data.store.items.forEach((bookmark) => {
+  // //   console.log(bookmark);
+  //   return $('ul').append(generateBookmarkList(bookmark));
+  // });
+
+  let items = data.store.items.map((bookmark) => generateBookmarkItem(bookmark));
+  return items.join('');
 }
 
 function render() {
+  let items = [...data.store.items];
   if(data.store.adding) {
-    return $('.js-mainMenu').after(generateAddBookmarkView);
+    $('section.js-mainMenu').after(generateAddBookmarkView);
   } 
-  if (data.store.error === null && data.store.items.length !== 0) {
-    return generateBookmarkListItem();
+
+  // if return response array === [] this means user is new so we want to set add item to false immediately
+  if (items.length === 0) {
+    $('#js-error-display').html(`<h4> nothing to show yet, add a bookmark</h4>`);
+  } else {
+    $('#js-error-display').html('');
   }
+
+  let bookmarkListString = generateBookmarkList(items);
+
+  return $('ul').html(bookmarkListString);
 }
 
 
@@ -85,7 +98,6 @@ function render() {
 
 function handleAddBookmarkClick() {
   $('#addBookmark').on('click', function (event) {
-    event.preventDefault();
     // prevents add button from being spammed 
     if (data.store.adding) {
       return alert('finish adding your item before you add another');
@@ -113,21 +125,26 @@ function handleSubmitBookmarkClick() {
     let userInputTitle = $('#addTitle').val();
     let userInputURL = $('#addURL').val();
     let userInputDesc = $('#addDescription').val();
+
     // createNewBookMarks will create a JSON obj 
     let newSubmission = {
       title: userInputTitle,
       url: userInputURL,
       desc: userInputDesc,
     };
-    //removes add link field
-    $('div').remove('.addBookMarkWindowView');
-    // makes it so you can add a new link
-    data.store.adding = false;
-    // posts to the API :) 
-    api.createNewBookmarks(newSubmission);
 
-  }) // need to add catch
-  ;
+    // posts to the API :) 
+    api.createNewBookmarks(newSubmission)
+      .then((newBookmark) => {
+        data.updatesLocalStore(newBookmark);
+        $('div').remove('.addBookMarkWindowView');
+        data.store.adding = false;
+        render();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  });
 }
 
 
@@ -148,7 +165,6 @@ function handleRatingSubmission() {
     api.updateBookmarks(currentBookmarkId, userRating);
   }) // need to add catch for error cases 
   ;
-  render();
 }
 
 function handleViewMoreClick() {
@@ -158,8 +174,7 @@ function handleViewMoreClick() {
     $(this).parents('li').find('section#js-toggleHide').removeClass('hide');
     $(this).addClass('hide');
     $(this).next().removeClass('hide');
-  })// need to add catch for error
-  render();
+  })
 }
 
 function handleViewLessClick() {
@@ -167,18 +182,25 @@ function handleViewLessClick() {
     $(this).parents('li').find('section#js-toggleHide').addClass('hide');
     $(this).addClass('hide');
     $(this).prev().removeClass('hide');
-  }) // need to add catch for error
-  render();
+  });
 }
 
 // might be helpful to use 
 // let targetTitle = $(this).parents('section').prev().text();
 //     let targetId = data.getCurrentItemID(targetTitle);
 function handleDeleteClick() {
-  $('body').on('click', '#js-delete', function (event) {
-    let bookmarktId = data.getCurrentItemID($('#js-delete').parents('section').prev().text());
-    api.deleteBookmarks(bookmarktId);
-  }) // need to add catch for error
+  $('body').on('click', '#js-delete', function () {
+    let targetTitle = $(this).parents('section').prev().text();
+    let targetId = data.getCurrentItemID(targetTitle);
+    api.deleteBookmarks(targetId)
+      .then(() => {
+        data.removesItemsFromLocalStore(targetId);
+        render();
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  });
 }
 
 // putting all event listeners in a convenient function 
@@ -200,4 +222,5 @@ function bindEventListeners() {
 export default {
   render,
   bindEventListeners,
+  generateBookmarkList
 };
