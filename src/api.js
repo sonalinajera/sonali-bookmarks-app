@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 //Example: https://thinkful-list-api.herokuapp.com/sonali/bookmarks
 const BASEURL = `https://thinkful-list-api.herokuapp.com`
 
@@ -13,7 +11,7 @@ function apiFetch(...args) {
     .then(res => {
       if(!res.ok) {
         error = {
-          // if response is not 2xx, start building error object
+          // if response is not 2xx's, start building error object
           code: res.status
         };
         // if response is not JSON type, some other issue place statusText in error object and
@@ -24,7 +22,7 @@ function apiFetch(...args) {
         }
       }
       //if this is a json object, we parse data and we have a javascript object
-      // this object might still be an error to work with :) 
+      // this object might still be an error we will need to work with :) 
       return res.json();
     })
     //data is the JS obj
@@ -72,7 +70,7 @@ function updateBookmarks(id, jsObject) {
   }
   );
 }
-
+// from documentation on api unclear if headers are needed- test later to see if it matters
 function deleteBookmarks(id) {
   return apiFetch(`${BASEURL}/${testUser}/bookmarks/${id}`, {
     method: 'DELETE',

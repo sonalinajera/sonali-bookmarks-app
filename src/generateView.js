@@ -1,32 +1,9 @@
 import $ from 'jquery';
 import api from './api.js';
-// import store from './store.js';
-
-
-// ******* functions below are for need to be moved to store.js **********
-const store = {
-  items: [],
-  adding: false,
-  error: null,
-  filter: 0,
-};
+import store from './store.js';
 
 
 
-function updatesLocalStore(item) {
-
-  if(item !== undefined) {
-    store.items.push(item);
-    render();
-  }
-}
-
-function getCurrentItemID(propertyToCompare) {
-  let bookmarkObj = store.items.find(function(bookmark) {
-    return bookmark.title === propertyToCompare;
-  });
-  return bookmarkObj.id;
-}
 
 
 // ******* functions below are for generateView.js **********
@@ -54,7 +31,7 @@ function generateAddBookmarkView() {
 //if rating !== undefined, then find value = rating and input:checked === true? 
 function generateBookmarkList() {
   return `<li>
-            <h3 class="flexListItems">${store.items[0].title}</h3>
+            <h3 class="flexListItems">${store.store.items[0].title}</h3>
             <section class="flexListElements">
               <fieldset class="starability-heartbeat">
                 <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
@@ -77,9 +54,9 @@ function generateBookmarkList() {
             </section>
 
             <section id="js-toggleHide" class="bookmarkDetails hide"> 
-            <p><a href="${store.items[0].url}">Visit Site</a></p>
+            <p><a href="${store.store.items[0].url}">Visit Site</a></p>
             <p class="description">
-            ${store.items[0].desc}
+            ${store.store.items[0].desc}
             </p>
             </section>
           </li>`;
@@ -91,10 +68,10 @@ function generateBookmarkListItem(arrOfBookMarks) {
 }
 
 function render() {
-  if(store.adding) {
+  if(store.store.adding) {
     return $('.js-mainMenu').after(generateAddBookmarkView);
   } 
-  if (store.error === null && store.items.length !== 0) {
+  if (store.store.error === null && store.store.items.length !== 0) {
     return $('ul').append(generateBookmarkList());
   }
 }
@@ -108,10 +85,10 @@ function handleAddBookmarkClick() {
   $('#addBookmark').on('click', function (event) {
     event.preventDefault();
     // prevents add button from being spammed 
-    if (store.adding) {
+    if (store.store.adding) {
       return alert('finish adding your item before you add another');
     }
-    store.adding = true; 
+    store.store.adding = true; 
     render();
   }) // need to add catch error functionality 
   ;
@@ -121,7 +98,7 @@ function handleCancelAddBookmarkClick() {
   $('body').on('click', '#js-cancelAddButton', function(event) {
     event.preventDefault();
     // if we cancel add bookmark set store.adding to false
-    store.adding = false;
+    store.store.adding = false;
     // remove create bookmarkk field
     $('div').remove('.addBookMarkWindowView');
   });
@@ -143,7 +120,7 @@ function handleSubmitBookmarkClick() {
     //removes add link field
     $('div').remove('.addBookMarkWindowView');
     // makes it so you can add a new link
-    store.adding = false;
+    store.store.adding = false;
     // posts to the API :) 
     api.createNewBookmarks(newSubmission);
     // render();
@@ -162,7 +139,7 @@ function handleRatingSubmission() {
     //parseInt since the value is string, convert to number to format the same as API 
     //grab the nearest title
     let bookmarkTitle = $('input:checked').parents('section').prev().text();
-    let currentBookmarkId = getCurrentItemID(bookmarkTitle);
+    let currentBookmarkId = store.getCurrentItemID(bookmarkTitle);
     let userRating = {
       rating: parseInt(event.target.value)
     };
@@ -194,7 +171,7 @@ function handleViewLessClick() {
 
 function handleDeleteClick() {
   $('body').on('click', '#js-delete', function (event) {
-    let bookmarktId = getCurrentItemID($('#js-delete').parents('section').prev().text());
+    let bookmarktId = store.getCurrentItemID($('#js-delete').parents('section').prev().text());
     api.deleteBookmarks(bookmarktId);
   }) // need to add catch for error
 }
@@ -218,6 +195,4 @@ function bindEventListeners() {
 export default {
   render,
   bindEventListeners,
-  store,
-  updatesLocalStore
 }
