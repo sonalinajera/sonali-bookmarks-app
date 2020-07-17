@@ -1,6 +1,3 @@
-//this file will export all functions to 
-
-// ******* functions below are for need to be moved to store.js **********
 const store = {
   items: [],
   adding: false,
@@ -8,26 +5,51 @@ const store = {
   filter: 0,
 };
   
+function updateAddingBookmarkStoreState(bool) {
+  this.store.adding = bool;
+} 
+
+function updateBookmarkHideDetails(index, bool){
+  this.store.items[index].hideDetails = bool;
+}
   
-  
-function updatesLocalStore(item) {
+function updateLocalStore(item) {
 //this is part of object oriented programming
   this.store.items.push(item); 
 }
 
-function removesItemsFromLocalStore(id) {
+function removeItemsFromLocalStore(id) {
   store.items = store.items.filter(bookmark => bookmark.id !== id);
 }
+
+function getMatchingBookMarkIndex(id) {
+  let targetIndex = store.items.findIndex(function(currentItem) {
+    return currentItem.id === id;
+  });
+  return targetIndex;
+}
+
+function getMatchingBookmark(id) {
+  let targetBookmark = store.items.find(function(currentItem) {
+    return currentItem.id === id;
+  });
+  return targetBookmark;
+}
+
 function getCurrentItemID(targetName) { 
-  let targetObj = store.items.find(function(currentItem) {
+  let targetBookmark = store.items.find(function(currentItem) {
     return currentItem.title === targetName;});
-  return targetObj.id;
+  return targetBookmark.id;
 }
 
 
 export default {
   store,
-  updatesLocalStore,
-  removesItemsFromLocalStore,
-  getCurrentItemID
+  updateLocalStore,
+  removeItemsFromLocalStore,
+  getCurrentItemID,
+  getMatchingBookmark,
+  getMatchingBookMarkIndex,
+  updateAddingBookmarkStoreState,
+  updateBookmarkHideDetails
 };

@@ -30,6 +30,12 @@ function generateAddBookmarkView() {
 // needs to render radio button selection if a rating exists in the API
 //if rating !== undefined, then find value = rating and input:checked === true? 
 function generateBookmarkItem(bookmark) {
+  let bookmarkViewDetailsButton = `<button class="js-viewMore" type="button">View More</button>`
+  let bookmarkDetailsSection = `<section id="js-toggleHide" class="bookmarkDetails hide">`;
+  if (bookmark.hideDetails) {
+    bookmarkViewDetailsButton = `<button class="js-viewLess" type="button">View Less</button>`
+    bookmarkDetailsSection = `<section id="js-toggleHide" class="bookmarkDetails">`
+  }
   return `<li>
             <h3 class="flexListItems">${bookmark.title}</h3>
             <section class="flexListElements">
@@ -47,13 +53,12 @@ function generateBookmarkItem(bookmark) {
                 <label for="first-rate5" title="Amazing">5 stars</label>
               </fieldset>
                
-              <button id="" class="js-viewMore" type="button">View More</button>
-              <button id="" class="js-viewLess hide" type="button">View Less</button>
+              ${bookmarkViewDetailsButton}
               <button id="js-delete" type="button">Delete</button>
      
             </section>
 
-            <section id="js-toggleHide" class="bookmarkDetails hide"> 
+            ${bookmarkDetailsSection} 
             <p><a href="${bookmark.url}">Visit Site</a></p>
             <p class="description">
             ${bookmark.desc}
@@ -64,30 +69,27 @@ function generateBookmarkItem(bookmark) {
 }
 
 function generateBookmarkList() {
-  // data.store.items.forEach((bookmark) => {
-  // //   console.log(bookmark);
-  //   return $('ul').append(generateBookmarkList(bookmark));
-  // });
-
-  let items = data.store.items.map((bookmark) => generateBookmarkItem(bookmark));
-  return items.join('');
+  let bookmarksArray = data.store.items.map((bookmark) => generateBookmarkItem(bookmark));
+  return bookmarksArray.join('');
 }
 
+
+
 function render() {
-  let items = [...data.store.items];
+  let bookmarkItems = [...data.store.items];
+ 
   if(data.store.adding) {
     $('section.js-mainMenu').after(generateAddBookmarkView);
-  } 
-
+  }
   // if return response array === [] this means user is new so we want to set add item to false immediately
-  if (items.length === 0) {
+  if (bookmarkItems.length === 0) {
     $('#js-error-display').html(`<h4> nothing to show yet, add a bookmark</h4>`);
   } else {
     $('#js-error-display').html('');
   }
 
-  let bookmarkListString = generateBookmarkList(items);
-
+  let bookmarkListString = generateBookmarkList(bookmarkItems);
+  console.log('from render:',data.store.items)
   return $('ul').html(bookmarkListString);
 }
 
@@ -97,12 +99,12 @@ function render() {
 // *************** EVENT LISTENERS ***************
 
 function handleAddBookmarkClick() {
-  $('#addBookmark').on('click', function (event) {
+  $('#addBookmark').on('click', function () {
     // prevents add button from being spammed 
     if (data.store.adding) {
       return alert('finish adding your item before you add another');
     }
-    data.store.adding = true; 
+    data.updateAddingBookmarkStoreState(true); 
     render();
   }) // need to add catch error functionality 
   ;
@@ -112,7 +114,7 @@ function handleCancelAddBookmarkClick() {
   $('body').on('click', '#js-cancelAddButton', function(event) {
     event.preventDefault();
     // if we cancel add bookmark set store.adding to false
-    data.store.adding = false;
+    data.updateAddingBookmarkStoreState(false);
     // remove create bookmarkk field
     $('div').remove('.addBookMarkWindowView');
   });
@@ -127,18 +129,18 @@ function handleSubmitBookmarkClick() {
     let userInputDesc = $('#addDescription').val();
 
     // createNewBookMarks will create a JSON obj 
-    let newSubmission = {
+    let newBookmark = {
       title: userInputTitle,
       url: userInputURL,
       desc: userInputDesc,
     };
 
     // posts to the API :) 
-    api.createNewBookmarks(newSubmission)
+    api.createNewBookmarks(newBookmark)
       .then((newBookmark) => {
-        data.updatesLocalStore(newBookmark);
+        data.updateLocalStore(newBookmark);
         $('div').remove('.addBookMarkWindowView');
-        data.store.adding = false;
+        data.updateAddingBookmarkStoreState(false);
         render();
       })
       .catch((e) => {
@@ -169,19 +171,25 @@ function handleRatingSubmission() {
 
 function handleViewMoreClick() {
   $('ul').on('click', '.js-viewMore', function () {
-
-    // the this in this code represents current event target! not part of building js obj
-    $(this).parents('li').find('section#js-toggleHide').removeClass('hide');
-    $(this).addClass('hide');
-    $(this).next().removeClass('hide');
-  })
+    let targetTitle = $(this).closest('li').find('h3').text();
+    let targetId = data.getCurrentItemID(targetTitle);
+    let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
+    data.updateBookmarkHideDetails(targetBookMarkIndex, true);
+    render();
+  });
 }
 
 function handleViewLessClick() {
   $('ul').on('click', '.js-viewLess', function () {
-    $(this).parents('li').find('section#js-toggleHide').addClass('hide');
-    $(this).addClass('hide');
-    $(this).prev().removeClass('hide');
+    console.log('viewless is being clicked');
+    let targetTitle = $(this).closest('li').find('h3').text();
+    let targetId = data.getCurrentItemID(targetTitle);
+    let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
+    data.updateBookmarkHideDetails(targetBookMarkIndex, false);
+    render();
+    // $(this).parents('li').find('section#js-toggleHide').addClass('hide');
+    // $(this).addClass('hide');
+    // $(this).prev().removeClass('hide');
   });
 }
 
@@ -190,11 +198,11 @@ function handleViewLessClick() {
 //     let targetId = data.getCurrentItemID(targetTitle);
 function handleDeleteClick() {
   $('body').on('click', '#js-delete', function () {
-    let targetTitle = $(this).parents('section').prev().text();
+    let targetTitle = $(this).closest('li').find('h3').text();
     let targetId = data.getCurrentItemID(targetTitle);
     api.deleteBookmarks(targetId)
       .then(() => {
-        data.removesItemsFromLocalStore(targetId);
+        data.removeItemsFromLocalStore(targetId);
         render();
       })
       .catch((e) => {

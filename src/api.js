@@ -3,8 +3,6 @@ const BASEURL = `https://thinkful-list-api.herokuapp.com`
 
 let testUser = 'sonali';
 
-//fetch to check if adding is there, if user is new add  adding as true; 
-
 function apiFetch(...args) {
   let error;
   return fetch(...args)
@@ -39,7 +37,7 @@ function apiFetch(...args) {
 }
 
 function getBookmarks(){
-  return apiFetch(`${BASEURL}/${testUser}/bookmarks`); // []
+  return apiFetch(`${BASEURL}/${testUser}/bookmarks`); // [] expected when it's a new user, or no data
 }
 
 function createNewBookmarks(jsObject) {
@@ -55,9 +53,6 @@ function createNewBookmarks(jsObject) {
     body: JSONObj
   });
 }
-
-
-
 
 function updateBookmarks(id, jsObject) {
   const JSONObj = JSON.stringify(jsObject);
@@ -80,10 +75,9 @@ function deleteBookmarks(id) {
   });
 }
 
-
 export default {
   getBookmarks,
   createNewBookmarks,
   updateBookmarks,
   deleteBookmarks
-}
+};
