@@ -4,6 +4,11 @@ const store = {
   error: null,
   filter: 0,
 };
+
+
+const updateStore = (property, value) => {
+  this.store.property = value;
+}
   
 function updateAddingBookmarkStoreState(bool) {
   this.store.adding = bool;
@@ -18,7 +23,6 @@ function returnBookmarksWithNRating(){
   return store.items.filter(bookmark => bookmark.rating >= store.filter);
 }
 
-//rewrite to use ID rather than index- 
 function updateItemRating(index, number){
   this.store.items[index].rating = number;
 }
@@ -28,16 +32,15 @@ function updateBookmarkHideDetails(index, bool){
 }
   
 function updateLocalStore(item) {
-//this is part of object oriented programming
   this.store.items.push(item); 
 }
 
 function removeItemsFromLocalStore(id) {
-  store.items = store.items.filter(bookmark => bookmark.id !== id);
+  this.store.items = this.store.items.filter(bookmark => bookmark.id !== id);
 }
 
 function getMatchingBookMarkIndex(id) {
-  let targetIndex = store.items.findIndex(function(currentItem) {
+  let targetIndex = this.store.items.findIndex(function(currentItem) {
     return currentItem.id === id;
   });
   return targetIndex;

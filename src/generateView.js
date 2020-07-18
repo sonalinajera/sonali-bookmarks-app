@@ -145,7 +145,7 @@ function handleSubmitBookmarkClick() {
     };
 
     // posts to the API :) 
-    api.createNewBookmarks(newBookmark)
+    api.createNewBookmark(newBookmark)
       .then((newBookmark) => {
         data.updateLocalStore(newBookmark);
         $('div').remove('.addBookMarkWindowView');
@@ -183,7 +183,7 @@ function handleRatingSubmission() {
       rating: radioValue
     };
 
-    api.updateBookmarks(targetId, userRating).then(() => {
+    api.updateBookmark(targetId, userRating).then(() => {
       data.updateItemRating(targetBookMarkIndex, userRating.rating);
       render();
     })
@@ -221,7 +221,7 @@ function handleDeleteClick() {
   $('body').on('click', '#js-delete', function () {
     let targetTitle = $(this).closest('li').find('h3').text();
     let targetId = data.getCurrentItemID(targetTitle);
-    api.deleteBookmarks(targetId)
+    api.deleteBookmark(targetId)
       .then(() => {
         data.removeItemsFromLocalStore(targetId);
         render();
