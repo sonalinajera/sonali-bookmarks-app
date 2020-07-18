@@ -160,7 +160,7 @@ function handleSubmitBookmarkClick() {
 function handleRatingFilterSet(){
   $('select#dropdown').on('change', function (){
     let filterValue = $(this).val();
-    data.updateFilterValue(filterValue);
+    data.store.filter = filterValue;
     render();
   }); 
 }
@@ -172,7 +172,7 @@ function handleRatingSubmission() {
 
     let radioValue = parseInt($(this).closest('fieldset').find(':checked').val());
     let targetId = $(this).closest('li').attr('data-id');
-    let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
+    let targetBookMarkIndex = data.getBookmarkByIndex(targetId);
     let userRating = {
       rating: radioValue
     };
@@ -191,7 +191,7 @@ function handleRatingSubmission() {
 function handleViewMoreClick() {
   $('ul').on('click', '.js-viewMore', function () {
     let targetId = $(this).closest('li').attr('data-id');
-    let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
+    let targetBookMarkIndex = data.getBookmarkByIndex(targetId);
     data.updateBookmarkHideDetails(targetBookMarkIndex, true);
     render();
   });
@@ -200,15 +200,12 @@ function handleViewMoreClick() {
 function handleViewLessClick() {
   $('ul').on('click', '.js-viewLess', function () {
     let targetId = $(this).closest('li').attr('data-id');
-    let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
+    let targetBookMarkIndex = data.getBookmarkByIndex(targetId);
     data.updateBookmarkHideDetails(targetBookMarkIndex, false);
     render();
   });
 }
 
-// might be helpful to use 
-// let targetTitle = $(this).parents('section').prev().text();
-//     let targetId = data.getCurrentItemID(targetTitle);
 function handleDeleteClick() {
   $('body').on('click', '#js-delete', function () {
     let targetId = $(this).closest('li').attr('data-id');
@@ -245,9 +242,6 @@ function bindEventListeners() {
   handleCloseError();
 }
 
-
-// we export our event listeners so index can have access to them 
-// we also export our render function which calls the generate view functions 
 
 export default {
   render,
