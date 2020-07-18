@@ -70,8 +70,8 @@ function generateBookmarkItem(bookmark, i) {
 
 }
 
-function generateBookmarkList() {
-  let bookmarksArray = data.store.items.map((bookmark , i) => generateBookmarkItem(bookmark, i));
+function generateBookmarkList(bookmarkList) {
+  let bookmarksArray = bookmarkList.map((bookmark , i) => generateBookmarkItem(bookmark, i));
   return bookmarksArray.join('');
 }
 
@@ -79,7 +79,6 @@ function generateBookmarkList() {
 
 function render() {
   let bookmarkItems = [...data.store.items];
- 
   if(data.store.adding) {
     $('section.js-mainMenu').after(generateAddBookmarkView);
   }
@@ -89,8 +88,17 @@ function render() {
   } else {
     $('#js-error-display').html('');
   }
+console.log('rendvr rating', data.store.filter);
 
-  let bookmarkListString = generateBookmarkList(bookmarkItems);
+  if (data.store.filter > 0) {
+    let filteredBookmarks = data.returnBookmarksWithNRating();
+    console.log('i am here', data.store.filter, filteredBookmarks)
+    let filteredBookmarkListString = generateBookmarkList(filteredBookmarks);
+    console.log(filteredBookmarkListString)
+    return $('ul').html(filteredBookmarkListString);
+  }
+
+  let bookmarkListString= generateBookmarkList(bookmarkItems);
   return $('ul').html(bookmarkListString);
 }
 
@@ -148,6 +156,15 @@ function handleSubmitBookmarkClick() {
         console.log(e);
       });
   });
+}
+
+function handleRatingFilterSet(){
+  $('select#dropdown').on('change', function (){
+    let filterValue = $(this).val();
+    console.log(filterValue)
+    data.updateFilterValue(filterValue);
+    render();
+  }); 
 }
 
 
@@ -223,6 +240,7 @@ function bindEventListeners() {
   handleSubmitBookmarkClick();
   handleViewMoreClick();
   handleViewLessClick();
+  handleRatingFilterSet(),
   handleRatingSubmission();
   handleDeleteClick();
 }

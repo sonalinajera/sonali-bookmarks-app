@@ -9,6 +9,15 @@ function updateAddingBookmarkStoreState(bool) {
   this.store.adding = bool;
 } 
 
+function updateFilterValue(value) {
+  this.store.filter = value;
+  console.log('storevalue', store.filter);
+}
+
+function returnBookmarksWithNRating(){
+  return store.items.filter(bookmark => bookmark.rating >= store.filter);
+}
+
 //rewrite to use ID rather than index- 
 function updateItemRating(index, number){
   this.store.items[index].rating = number;
@@ -57,5 +66,7 @@ export default {
   getMatchingBookMarkIndex,
   updateAddingBookmarkStoreState,
   updateBookmarkHideDetails,
-  updateItemRating
+  updateItemRating,
+  updateFilterValue,
+  returnBookmarksWithNRating
 };
