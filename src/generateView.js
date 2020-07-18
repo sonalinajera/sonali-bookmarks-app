@@ -43,7 +43,7 @@ function generateBookmarkItem(bookmark, i) {
   }
 
   return `<li data-id="${bookmark.id}">
-            <h3 class="flexListItems">${bookmark.title}</h3>
+            <h3>${bookmark.title}</h3>
             <section class="flexListElements">
               <fieldset class="starability-basic">
                 <input type="radio" id="${bookmark.id}0" class="input-no-rate" name="rating${i}" value="0" checked aria-label="No rating." />
@@ -59,9 +59,9 @@ function generateBookmarkItem(bookmark, i) {
                 <label for="${bookmark.id}5" title="Amazing">5 stars</label>
                 <span class="starability-focus-ring"></span>
               </fieldset>
-               
-              ${bookmarkViewDetailsButton}
-              <button id="js-delete" type="button">Delete</button>
+            
+            ${bookmarkViewDetailsButton}
+            <button id="js-delete" type="button">Delete</button>
             </section>
 
             ${bookmarkDetailsSection} 

@@ -1,26 +1,33 @@
-/* Test to make sure sheet is linked  */
-/* h1 {
-    color: red;
-} */
-/* end of test */
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&family=Montserrat&family=Quicksand:wght@600&family=Raleway&display=swap');
 
-body {
+  body {
+    background-image: url(mobile-bookmark-background.png);
     display:flex; 
     flex-direction:column; 
-    justify-content:center;
     align-items: center;
     text-align: center;
     margin-top: 20px;
+    font-family: 'Montserrat', sans-serif;
   }
   
-  body > section {
+  #backgroundDecoration{
+    max-width: 15%;
+    border-radius: 50%;
+  }
+
+  body > main {
     width: 90%;
   }
   
   
   h1 {
+    font-family: 'Berkshire Swash', cursive;
     margin-bottom: 20px;
-    color: rgb(175, 128, 67)
+    font-size: 50px;
+    background-image: url(goldFoil.png);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
   }
   
   h2 {
@@ -30,6 +37,7 @@ body {
   h3 {
     margin-top: 5px;
     margin-bottom: 5px;
+    font-size: 26px;
   }
 
   .flexMainMenu {
@@ -39,23 +47,38 @@ body {
     margin-bottom: 10px;
   }
 
-  .flexMainMenu button {
+  button, #addBookmark, input[type="button"], input[type="submit"]{
       border-radius: 10px;
-      background-color: #f0d264
+      background-color: #CF9430;
+      color: #010203;
+      font-size: 14px;
+      height: 40px;
   }
 
+  #dropdown {
+    border-radius: 10px;
+    border: 2px outset -internal-light-dark-color(rgb(118, 118, 118), rgb(195, 195, 195));
+    background-color: #CF9430;
+    color: #010203;
+    font-size: 14px;
+    height: 40px;
+  }
 
 
   /* styles for user add bookmark view  */
   
   .addBookMarkWindowView {
-    border: solid 2px purple;
-    width: 70%;
+    border: solid 2px #3D2C0E;
+    border-radius: 10px;
+    width: 80%;
     margin: auto;
     padding-top: 10px;
     padding-bottom: 30px;
   }
-  
+  textarea, input {
+    font-family: 'Raleway', sans-serif;
+  }
+
   form {
     width: 100%;
     margin: auto;
@@ -63,14 +86,18 @@ body {
   
   form input[type="text"], input[type="url"] {
     width: 195px; 
+    height: 25px;
     margin-top: 5px;
     margin-bottom: 10px;
-  
+    border: solid 2px #70511A;
+    border-radius: 4px;
   }
   
   textarea {
     width: 196px;
     height: 50px;
+    border: solid 2px #70511A;
+    border-radius: 4px;
   }
   
   form > section { 
@@ -95,37 +122,30 @@ body {
   
   ul {
     list-style-type: none;
-    border: 1px blue dashed;
     width: 90%;
-    margin: auto;
+    margin: 0 auto 30px auto;
     padding: 0;
   }
   
   li {
-    border: 2px green solid;
+    border: 2px #887148 double;
     padding: 10px 5px;
-    margin-bottom: 5px; 
     width: 95%;
-    margin: auto;
+    margin-bottom: 5px; 
+    margin-left: auto;
+    margin-right: auto;
   }
   
   fieldset {
-    padding: 0px;
-    text-align: center;
-    
+    margin: auto;
   }
-  
+
   .flexListElements {
-    color: red;
     display: flex;
     margin: 0;
-    flex-direction: row;
-    justify-content: space-around;
+    flex-direction: column;
   }
   
-  .flexListItems {
-    flex: 1;
-  }
   
   /* styles for when user clicks view more in their bookmark list  */
   .hide {
@@ -136,19 +156,67 @@ body {
     width: 95%;
     margin: auto;
   }
+
+  a{
+    font-family: 'Quicksand', sans-serif;
+    text-decoration: none;
+    color: #CF9430;
+  }
   
   p {
     text-align: start;
-    margin: 10px 0;
+    margin: 20px 0 10px 0;
   }
   
   p.websiteDescription {
     text-align: start;
     margin: auto;
-    height: 40px;
+    height: 20px;
     width: 95%;
     overflow: scroll;
     overflow-y: scroll;
   }
-  
+
+  @media screen and (min-width: 400px) { 
+    
+    body {
+      margin: 50px auto;
+      width: 90%;
+    }
+    
+    h3 {
+      margin-bottom: 15px;
+    }
+    fieldset {
+      margin: 0;
+    }
+    .flexListElements {
+      flex-direction: row;
+      justify-content: space-evenly;
+    }
+
+    .bookmarkDetails{
+      width: 80%;
+    }
+
+  }
+
+
+  @media screen and (min-width: 600px) {
+    
+    body {
+      margin: 50px auto;
+      width: 670px;
+    }
+
+    .bookmarkDetails{
+      width: 70%;
+    }
+
+  }
+
 /* ****** Need to add desktop styles here ******    */
+
+
+
+    
