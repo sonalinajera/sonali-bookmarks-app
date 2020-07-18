@@ -57,7 +57,7 @@
 
   #dropdown {
     border-radius: 10px;
-    border: 2px outset -internal-light-dark-color(rgb(118, 118, 118), rgb(195, 195, 195));
+    border: 2px outset rgb(118, 118, 118);
     background-color: #CF9430;
     color: #010203;
     font-size: 14px;
