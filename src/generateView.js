@@ -29,34 +29,31 @@ function generateAddBookmarkView() {
 }
 // needs to render radio button selection if a rating exists in the API
 //if rating !== undefined, then find value = rating and input:checked === true? 
-function generateBookmarkItem(bookmark) {
+function generateBookmarkItem(bookmark, i) {
   let bookmarkViewDetailsButton = `<button class="js-viewMore" type="button">View More</button>`
   let bookmarkDetailsSection = `<section id="js-toggleHide" class="bookmarkDetails hide">`;
   if (bookmark.hideDetails) {
     bookmarkViewDetailsButton = `<button class="js-viewLess" type="button">View Less</button>`
     bookmarkDetailsSection = `<section id="js-toggleHide" class="bookmarkDetails">`
-
-  // if(bookmark.rating !== null) {
-
-  // }
   
   }
-  return `<li>
+  return `<li data-id="${bookmark.id}">
             <h3 class="flexListItems">${bookmark.title}</h3>
             <section class="flexListElements">
-              <fieldset class="starability-heartbeat">
-                <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
-                <input ${bookmark.rating === 1 ? `checked` : ``} type="radio" id="first-rate1" name="rating" value="1" />
-                <label for="first-rate1" title="Terrible">1 star</label>
-                <input ${bookmark.rating === 2 ? `checked` : ``} type="radio" id="first-rate2" name="rating" value="2" />
-                <label for="first-rate2" title="Not good">2 stars</label>
-                <input ${bookmark.rating === 3 ? `checked` : ``} type="radio" id="first-rate3" name="rating" value="3" />
-                <label for="first-rate3" title="Average">3 stars</label>
-                <input ${bookmark.rating === 4 ? `checked` : ``} type="radio" id="first-rate4" name="rating" value="4" />
-                <label for="first-rate4" title="Very good">4 stars</label>
-                <input ${bookmark.rating === 5 ? `checked` : ``} type="radio" id="first-rate5" name="rating" value="5" />
-                <label for="first-rate5" title="Amazing">5 stars</label>
-              </fieldset>
+            <fieldset class="starability-basic">
+            <input type="radio" id="${bookmark.id}0" class="input-no-rate" name="rating${i}" value="0" checked aria-label="No rating." />
+            <input ${bookmark.rating === 1 ? `checked` : ``} type="radio" id="${bookmark.id}1" name="rating${i}" value="1" />
+            <label for="${bookmark.id}1" title="Terrible">1 star</label>
+            <input ${bookmark.rating === 2 ? `checked` : ``} type="radio" id="${bookmark.id}2" name="rating${i}" value="2" />
+            <label for="${bookmark.id}2" title="Not good">2 stars</label>
+            <input ${bookmark.rating === 3 ? `checked` : ``} type="radio" id="${bookmark.id}3" name="rating${i}" value="3" />
+            <label for="${bookmark.id}3" title="Average">3 stars</label>
+            <input ${bookmark.rating === 4 ? `checked` : ``} type="radio" id="${bookmark.id}4" name="rating${i}" value="4" />
+            <label for="${bookmark.id}4" title="Very good">4 stars</label>
+            <input ${bookmark.rating === 5 ? `checked` : ``} type="radio" id="${bookmark.id}5" name="rating${i}" value="5" />
+            <label for="${bookmark.id}5" title="Amazing">5 stars</label>
+             <span class="starability-focus-ring"></span>
+            </fieldset>
                
               ${bookmarkViewDetailsButton}
               <button id="js-delete" type="button">Delete</button>
@@ -74,7 +71,7 @@ function generateBookmarkItem(bookmark) {
 }
 
 function generateBookmarkList() {
-  let bookmarksArray = data.store.items.map((bookmark) => generateBookmarkItem(bookmark));
+  let bookmarksArray = data.store.items.map((bookmark , i) => generateBookmarkItem(bookmark, i));
   return bookmarksArray.join('');
 }
 
@@ -94,7 +91,6 @@ function render() {
   }
 
   let bookmarkListString = generateBookmarkList(bookmarkItems);
-  console.log('from render:',data.store.items)
   return $('ul').html(bookmarkListString);
 }
 
@@ -159,18 +155,20 @@ function handleRatingSubmission() {
   // listens for the form submit event for the ratings
   //.starability-heartbeat input listens for input element in on submit
   //
-  $('body').on('click', 'input:checked', function (event) {
-    
-    let targetTitle = $(this).closest('li').find('h3').text();
-    let targetId = data.getCurrentItemID(targetTitle);
+  $('body').on('click', ':checked', function () {
+    event.preventDefault();
+
+    let radioValue = parseInt($(this).closest('fieldset').find(':checked').val());
+    let targetId = $(this).closest('li').attr('data-id');
     let targetBookMarkIndex = data.getMatchingBookMarkIndex(targetId);
+    console.log(radioValue)
     let userRating = {
-      rating: parseInt(event.target.value)
+      rating: radioValue
     };
+
     api.updateBookmarks(targetId, userRating).then(() => {
       data.updateItemRating(targetBookMarkIndex, userRating.rating);
-      console.log('Rating Changed', data.store.items);
-      // render();
+      render();
     })
       .catch((e) => {
         console.log(e);

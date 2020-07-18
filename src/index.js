@@ -13,9 +13,9 @@ import generateView from './generateView.js';
 function main () {
   //function getBookmarks, calls apiFetch, that returns JS objs if any, we deal with a JS obj because our api fetch parses JSON obj and returns JS obj
   api.getBookmarks()
-    .then(items => { 
+    .then(bookmarkList => { 
       //push each obj containing our info to our local store
-      items.forEach((bookmark) => {
+      bookmarkList.forEach((bookmark) => {
         bookmark.hideDetails = false;
         return data.updateLocalStore(bookmark);
       });

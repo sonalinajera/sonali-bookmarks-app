@@ -9,6 +9,7 @@ function updateAddingBookmarkStoreState(bool) {
   this.store.adding = bool;
 } 
 
+//rewrite to use ID rather than index- 
 function updateItemRating(index, number){
   this.store.items[index].rating = number;
 }
