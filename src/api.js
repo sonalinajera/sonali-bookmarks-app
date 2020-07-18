@@ -51,6 +51,7 @@ function updateBookmark(id, newEdit) {
   }
   );
 }
+
 function deleteBookmark(id) {
   return apiFetch(`${BASEURL}/bookmarks/${id}`, {
     method: 'DELETE'

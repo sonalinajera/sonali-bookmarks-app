@@ -1,73 +1,63 @@
 const store = {
-  items: [],
+  bookmarks: [],
   adding: false,
   error: null,
   filter: 0,
 };
 
-
-const updateStore = (property, value) => {
-  this.store.property = value;
-}
-  
-function updateAddingBookmarkStoreState(bool) {
-  this.store.adding = bool;
-} 
-
-function updateFilterValue(value) {
-  this.store.filter = value;
-  console.log('storevalue', store.filter);
+function updateLocalStore(item) {
+  this.store.bookmarks.push(item); 
 }
 
 function returnBookmarksWithNRating(){
-  return store.items.filter(bookmark => bookmark.rating >= store.filter);
+  return store.bookmarks.filter(bookmark => bookmark.rating >= store.filter);
 }
 
+function updateFilterValue(value) {
+  this.store.filter = value;
+}
+
+
 function updateItemRating(index, number){
-  this.store.items[index].rating = number;
+  this.store.bookmarks[index].rating = number;
 }
 
 function updateBookmarkHideDetails(index, bool){
-  this.store.items[index].hideDetails = bool;
+  this.store.bookmarks[index].hideDetails = bool;
 }
   
-function updateLocalStore(item) {
-  this.store.items.push(item); 
-}
 
 function removeItemsFromLocalStore(id) {
-  this.store.items = this.store.items.filter(bookmark => bookmark.id !== id);
+  this.store.bookmarks = this.store.bookmarks.filter(bookmark => bookmark.id !== id);
 }
 
 function getMatchingBookMarkIndex(id) {
-  let targetIndex = this.store.items.findIndex(function(currentItem) {
+  let targetIndex = this.store.bookmarks.findIndex(function(currentItem) {
     return currentItem.id === id;
   });
   return targetIndex;
 }
 
 function getMatchingBookmark(id) {
-  let targetBookmark = store.items.find(function(currentItem) {
+  let targetBookmark = store.bookmarks.find(function(currentItem) {
     return currentItem.id === id;
   });
   return targetBookmark;
 }
 
-function getCurrentItemID(targetName) { 
-  let targetBookmark = store.items.find(function(currentItem) {
-    return currentItem.title === targetName;});
-  return targetBookmark.id;
-}
+// function getCurrentItemID(targetName) { 
+//   let targetBookmark = store.bookmarks.find(function(currentItem) {
+//     return currentItem.title === targetName;});
+//   return targetBookmark.id;
+// }
 
 
 export default {
   store,
   updateLocalStore,
   removeItemsFromLocalStore,
-  getCurrentItemID,
   getMatchingBookmark,
   getMatchingBookMarkIndex,
-  updateAddingBookmarkStoreState,
   updateBookmarkHideDetails,
   updateItemRating,
   updateFilterValue,

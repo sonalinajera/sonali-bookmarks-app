@@ -81,6 +81,15 @@ body {
     width: 200px;
     margin: auto;
   }
+
+  section#error-container {
+    margin: 20px 0;
+  }
+
+  section#error-container > p {
+    text-align: center;
+    color: #bf4242;
+  }
   
   /* style for user bookmark display  */
   
@@ -133,7 +142,7 @@ body {
     margin: 10px 0;
   }
   
-  p.description {
+  p.websiteDescription {
     text-align: start;
     margin: auto;
     height: 40px;
