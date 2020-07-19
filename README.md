@@ -16,7 +16,7 @@
   <li>I can click on a bookmark to display the "detailed" view - (can probably be achieved by using css display none until button clicked and class is changed to allow user to see content)</li>
   <li>Detailed view expands to additionally display description and a "Visit Site" link</li>
   <li>I can remove bookmarks from my bookmark list</li> 
-  <li>I receive appropriate feedback when I cannot submit a bookmark. 
+  <li>I receive appropriate feedback when I cannot submit a bookmark. </li>
         Check all validations in the API documentation (e.g. title and url field required)</li>
   <li>I can select from a dropdown (a <select> element) a "minimum rating" to filter the list by all bookmarks rated at or above the chosen selection</li>
   <li>(Extension feature - optional) I can edit the rating and description of a bookmark in my list</li>
@@ -24,5 +24,6 @@
 
 
 <h3>Acknowledgements</h3>
-
+<p>
 Special thanks to the <a href="https://github.com/LunarLogic/starability">Lunar Logic</a> for an amazing code that allows for accessibility compatability with star ratings!
+</p>
