@@ -3,6 +3,14 @@
 <a href="https://thinkful-ei-quail.github.io/sonali-bookmarks-app/">Live project link</a>
 
 <h2>User Stories</h2>
+
+
+<h3>Acknowledgements</h3>
+<p>
+Special thanks to the <a href="https://github.com/LunarLogic/starability">Lunar Logic</a> team for an amazing code that allows for accessibility compatability with star ratings!
+</p>
+
+
 <ol>
   <li>I can add bookmarks to my bookmark list. Bookmarks contain:</li>
       <ul>
@@ -23,7 +31,4 @@
 </ol>
 
 
-<h3>Acknowledgements</h3>
-<p>
-Special thanks to the <a href="https://github.com/LunarLogic/starability">Lunar Logic</a> for an amazing code that allows for accessibility compatability with star ratings!
-</p>
+
