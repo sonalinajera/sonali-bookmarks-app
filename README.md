@@ -1,5 +1,7 @@
 <h1>BOOKMARK PROJECT</h1>
 
+<a href="https://thinkful-ei-quail.github.io/sonali-bookmarks-app/">Live project link</a>
+
 <h2>User Stories</h2>
 <ol>
   <li>I can add bookmarks to my bookmark list. Bookmarks contain:</li>
@@ -19,3 +21,8 @@
   <li>I can select from a dropdown (a <select> element) a "minimum rating" to filter the list by all bookmarks rated at or above the chosen selection</li>
   <li>(Extension feature - optional) I can edit the rating and description of a bookmark in my list</li>
 </ol>
+
+
+<h2>Acknowledgements</h2>
+
+Special thanks to the <a href="https://github.com/LunarLogic/starability">Lunar Logic</a> for an amazing code that allows for accessibility compatability with star ratings!
