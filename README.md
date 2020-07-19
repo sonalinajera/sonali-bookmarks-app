@@ -23,6 +23,6 @@
 </ol>
 
 
-<h2>Acknowledgements</h2>
+<h3>Acknowledgements</h3>
 
 Special thanks to the <a href="https://github.com/LunarLogic/starability">Lunar Logic</a> for an amazing code that allows for accessibility compatability with star ratings!
