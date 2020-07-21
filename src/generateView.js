@@ -158,7 +158,7 @@ function handleSubmitBookmarkClick() {
 }
 
 function handleRatingFilterSet(){
-  $('select#dropdown').on('change', function (){
+  $('select#starRating').on('change', function (){
     let filterValue = $(this).val();
     data.store.filter = filterValue;
     render();
