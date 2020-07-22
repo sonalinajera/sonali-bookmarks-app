@@ -10,6 +10,29 @@ import data from './store.js';
 // *************** GENERATE VIEWS ***************
 
 
+function generateStartView() {
+  return ` <div class="flexMainMenu js-mainMenu">
+  <button id="addBookmark" type="button">New Bookmark</button>
+  <div class="flexMainMenu">
+
+      <label for="starRating"></label>
+          <select id="starRating" name="select">
+          <option value=0>Show All</option>
+          <option value=5>5 stars</option>
+          <option value=4>4 stars & above</option>
+          <option value=3>3 stars & above</option>
+          <option value=2>2 stars & above</option>
+          <option value=1>1 star & above</option>
+      </select>
+  </div>
+</div>
+<div id="addBookmark-container"></div>
+<div id="error-container"></div>
+
+<ul>
+</ul>`;
+}
+
 function generateAddBookmarkView() {
   return `
     <div class="addBookMarkWindowView">
@@ -80,6 +103,8 @@ function generateError(message) {
 }
 
 function render() {
+  $('main').html(generateStartView());
+  
   renderError();
 
   let bookmarkItems = [...data.store.bookmarks];
@@ -114,7 +139,7 @@ function renderError() {
 // *************** EVENT LISTENERS ***************
 
 function handleAddBookmarkClick() {
-  $('#addBookmark').on('click', function () {
+  $('body').on('click', '#addBookmark', function () {
     if (data.store.adding) {
       return alert('finish adding your item before you add another');
     }
@@ -158,7 +183,7 @@ function handleSubmitBookmarkClick() {
 }
 
 function handleRatingFilterSet(){
-  $('select#starRating').on('change', function (){
+  $('body').on('change', '#starRating', function (){
     let filterValue = $(this).val();
     data.store.filter = filterValue;
     render();
@@ -189,7 +214,7 @@ function handleRatingSubmission() {
 }
 
 function handleViewMoreClick() {
-  $('ul').on('click', '.js-viewMore', function () {
+  $('body').on('click', '.js-viewMore', function () {
     let targetId = $(this).closest('li').attr('data-id');
     let targetBookMarkIndex = data.getBookmarkByIndex(targetId);
     data.updateBookmarkHideDetails(targetBookMarkIndex, true);
@@ -198,7 +223,7 @@ function handleViewMoreClick() {
 }
 
 function handleViewLessClick() {
-  $('ul').on('click', '.js-viewLess', function () {
+  $('body').on('click', '.js-viewLess', function () {
     let targetId = $(this).closest('li').attr('data-id');
     let targetBookMarkIndex = data.getBookmarkByIndex(targetId);
     data.updateBookmarkHideDetails(targetBookMarkIndex, false);
@@ -222,7 +247,7 @@ function handleDeleteClick() {
 }
 
 function handleCloseError() {
-  $('#error-container').on('click', '#cancel-error', () => {
+  $('body').on('click', '#cancel-error', () => {
     data.store.error = null;
     renderError();
   });
