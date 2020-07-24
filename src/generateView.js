@@ -15,9 +15,9 @@ function generateStartView() {
   <button id="addBookmark" type="button">New Bookmark</button>
   <div class="flexMainMenu">
 
-      <label for="starRating"></label>
+      <label for="starRating">Filter</label>
           <select id="starRating" name="select">
-          <option value=0>Show All</option>
+          <option value=0>Filter By</option>
           <option value=5>5 stars</option>
           <option value=4>4 stars & above</option>
           <option value=3>3 stars & above</option>
@@ -37,15 +37,21 @@ function generateAddBookmarkView() {
   return `
     <div class="addBookMarkWindowView">
         <form id="js-formSubmit">
+            <label for="addTitle">Site Title</label>
+            <br>
             <input type="text" id="addTitle" name="addTitle" placeholder="Title" required>
             <br>
+            <label for="addURL">Site URL</label>
+            <br>
             <input type="url" id="addURL" name="addURL" placeholder="http(s)://example.com" pattern="https?://.*" required>
+            <br>
+            <label for="addDescription">Site Description</label>
             <br>
             <textarea id="addDescription" name="addDescription" placeholder="short and sweet!" required maxlength="70"></textarea>
             <br>
             <section class="addButtonFlex">	
-                <input type="button" id="js-cancelAddButton" value="Cancel">
-                <input type="submit" id="js-submitAddButton" value="Submit">
+                <button type="button" id="js-cancelAddButton" value="Cancel">Cancel</button>
+                <button type="submit" id="js-submitAddButton" value="Submit">Submit</button>
             <section>
         </form> 
     </div>`;
@@ -66,9 +72,10 @@ function generateBookmarkItem(bookmark, i) {
   }
 
   return `<li data-id="${bookmark.id}">
-            <h3>${bookmark.title}</h3>
+            <h2>${bookmark.title}</h2>
             <section class="flexListElements">
               <fieldset class="starability-basic">
+              <legend>Site Rating</legend>
                 <input type="radio" id="${bookmark.id}0" class="input-no-rate" name="rating${i}" value="0" checked aria-label="No rating." />
                 <input ${bookmark.rating === 1 ? `checked` : ``} type="radio" id="${bookmark.id}1" name="rating${i}" value="1" />
                 <label for="${bookmark.id}1" title="Terrible">1 star</label>
@@ -109,7 +116,7 @@ function render() {
 
   let bookmarkItems = [...data.store.bookmarks];
   if (bookmarkItems.length === 0) {
-    $('#error-container').html(`<h4> nothing to show yet, add a bookmark</h4>`);
+    $('#error-container').html(`<h2> nothing to show yet, add a bookmark</h2>`);
   } else {
     $('#error-container').html('');
   }

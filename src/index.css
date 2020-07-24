@@ -30,13 +30,10 @@
     color: transparent;
   }
   
-  h2 {
-    color: red;
-  }
   
-  h3 {
+  h2 {
     margin-top: 5px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     font-size: 26px;
   }
 
@@ -53,6 +50,10 @@
       color: #010203;
       font-size: 14px;
       height: 40px;
+  }
+
+  button#js-cancelAddButton, button#js-submitAddButton {
+    width: 90px;
   }
 
   #starRating {
@@ -161,7 +162,7 @@
   a{
     font-family: 'Quicksand', sans-serif;
     text-decoration: none;
-    color: #CF9430;
+    color: #a06a0b;
   }
   
   p {
